@@ -237,7 +237,7 @@ console.log(arr.length);    //10
 
 // let x = arr.slice(3);
 // let y = arr.slice(0,3);
-// console.log( [...x,...y] );    ////[40,50,60,10,20,30]
+// console.log( [...x] );    ////[40,50,60,10,20,30]
 
 
 
@@ -287,25 +287,3 @@ console.log(arr.length);    //10
 //     return element.cost == "300 $";
 // }),1);
 // console.log( arr1 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

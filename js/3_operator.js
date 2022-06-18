@@ -1,9 +1,9 @@
-var a
-var b
-var c=a+b
-console.log(a)  //undefined
-console.log(b)   //undefined
-console.log(c)   //NaN
+// var a
+// var b
+// var c=a+b
+// console.log(a)  //undefined
+// console.log(b)   //undefined
+// console.log(c)   //NaN
 
 // a=20
 // b='20'
