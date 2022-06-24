@@ -59,30 +59,97 @@
 //   }
 // );
 
-let promise1 = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("Hello_1");
-    }, 2000);
-  });
-  
-  let promise2 = new Promise((resolve, reject) => {
-    resolve("Hello_2");
-  });
-  
-  promise1.then(
-    (posRes) => {
-      console.log(posRes);
-    },
-    (errRes) => {
-      console.log(errRes);
-    }
-  );
-  
-  promise2.then(
-    (posRes) => {
-      console.log(posRes);
-    },
-    (errRes) => {
-      console.log(errRes);
-    }
-  );
+// let promise1 = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve("Hello_1");
+//     }, 2000);
+//   });
+
+//   let promise2 = new Promise((resolve, reject) => {
+//     resolve("Hello_2");
+//   });
+
+//   promise1.then(
+//     (posRes) => {
+//       console.log(posRes);
+//     },
+//     (errRes) => {
+//       console.log(errRes);
+//     }
+//   );
+
+//   promise2.then(
+//     (posRes) => {
+//       console.log(posRes);
+//     },
+//     (errRes) => {
+//       console.log(errRes);
+//     }
+//   );
+
+// Promise =resolve,reject,pending
+
+// function fun1() {
+//   return new Promise(function (resolve, reject) {
+//     setTimeout(() => {
+//       // const error = false;
+//       const error = true;
+//       if (!error) {
+//         console.log("fun : your promis has been resolved");
+//         resolve();
+//       } else {
+//         console.log("fun : your promise has not been resolved");
+//         reject("sorry not fulfilled");
+//       }
+//     }, 2000);
+//   });
+// }
+
+// fun1().then(function(){
+//   console.log("Hardik : Thanks for resilving ")
+// }).catch(function(){
+//   console.log(`Hardik : Very bad bro `)
+// })
+
+// async function harry(){
+//   console.log("inside")
+//   const response = await fetch('https://api.github.com/users');
+//   console.log('before response')
+//   const usres = await response.json();
+//   console.log ('usre resloved')
+//   return usres;
+//   // return "harry";
+// }
+
+// console.log("Before calling")
+// let va=harry();
+// console.log("mid calling")
+// console.log(va);
+// va.then(data=>console.log(data))
+// console.log("last ")
+
+const posts = [
+  { title: "post one", body: "this is post one" },
+  { title: "post two", body: "this is post two" },
+];
+
+function getPostes() {
+  setTimeout(() => {
+    let output = "";
+    posts.forEach((post, index) => {
+      output += `<li>${post.title}<li>`;
+    });
+    document.body.innerHTML = output;
+  }, 2000);
+}
+
+function cretPost(post, callback) {
+  setTimeout(() => {
+    posts.push(post);
+    callback();
+  }, 3000);
+}
+
+getPostes();
+
+cretPost({ title: "Post three", body: "this is post three" }, getPostes);
