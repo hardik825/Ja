@@ -128,28 +128,97 @@
 // va.then(data=>console.log(data))
 // console.log("last ")
 
-const posts = [
-  { title: "post one", body: "this is post one" },
-  { title: "post two", body: "this is post two" },
-];
+// const posts = [
+//   { title: "post one", body: "this is post one" },
+//   { title: "post two", body: "this is post two" },
+// ];
 
-function getPostes() {
-  setTimeout(() => {
-    let output = "";
-    posts.forEach((post, index) => {
-      output += `<li>${post.title}<li>`;
+// function getPostes() {
+//   setTimeout(() => {
+//     let output = "";
+//     posts.forEach((post, index) => {
+//       output += `<li>${post.title}<li>`;
+//     });
+//     document.body.innerHTML = output;
+//   }, 2000);
+// }
+
+// function cretPost(post, callback) {
+//   setTimeout(() => {
+//     posts.push(post);
+//     callback();
+//   }, 3000);
+// }
+
+// getPostes();
+
+// cretPost({ title: "Post three", body: "this is post three" }, getPostes);
+
+
+//            5
+function add(num, callback) {
+  return callback(num + 5, false);
+} //10,false
+function sub(num, callback) {
+  return callback(num - 3, false);
+}
+function mul(num, callback) {
+  return callback(num * 2, false);
+}
+function div(num, callback) {
+  return callback(num / 2, false);
+}
+add(5, (addRes, error) => {
+  if (!error) {
+    console.log("addRes : ", addRes);
+    sub(addRes, (subRes, error) => {
+      if (!error) {
+        console.log("subRes : ", subRes);
+        mul(subRes, (mulRes, error) => {
+          if (!error) {
+            console.log("mulRes : ", mulRes);
+            div(mulRes, (divRes, error) => {
+              if (!error) {
+                console.log("divRes : ", divRes);
+              }
+            });
+          }
+        });
+      }
     });
-    document.body.innerHTML = output;
-  }, 2000);
-}
+  }
+});
 
-function cretPost(post, callback) {
-  setTimeout(() => {
-    posts.push(post);
-    callback();
-  }, 3000);
-}
+// function add(num, callback) {
+//   return callback(num + 5, false);
+// }
 
-getPostes();
+// function sub(num, callback) {
+//   return callback(num - 3, false);
+// }
 
-cretPost({ title: "Post three", body: "this is post three" }, getPostes);
+// function mul(num, callback) {
+//   return callback(num * 2, false);
+// }
+
+// function div(num, callback) {
+//   return callback(num / 2 - 2, false);
+// }
+
+// add(5, (addRes, error) => {
+//   if (!error) {
+//     sub(addRes, (subRes, error) => {
+//       if (!error) {
+//         mul(subRes, (mulRes, error) => {
+//           if (!error) {
+//             div(mulRes, (divRes, error) => {
+//               if (!error) {
+//                 console.log(divRes);
+//               }
+//             });
+//           }
+//         });
+//       }
+//     });
+//   }
+// })
