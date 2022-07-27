@@ -1,6 +1,6 @@
 const express = require("express");
 const jwt = require("jwt-simple");
-const bcrypt =require("bcryptjs")
+// const bcrypt =require("bcryptjs")
 const tokenObj = require("../Token/token");
 const LoginModule = express.Router();
 
