@@ -1,0 +1,16 @@
+npm install express mongoose --save
+npm i jwt-simpele
+
+server file run 
+methoed post   localhost:5151/login   => body  > json 
+{
+    "uname":"admin",
+    "upwd":"admin123"
+}
+sem url
+headers > new == token : token id =eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmFtZSI6ImFkbWluIiwidXB3ZCI6ImFkbWluMTIzIn0.WJYFwG4Cy883rBucxTwkDR8KZ8bdc9oksCMA3kD-RTo
+
+
+new req methoed get localhost:5151/module1  
+
+headers > new == token : token id =eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmFtZSI6ImFkbWluIiwidXB3ZCI6ImFkbWluMTIzIn0.WJYFwG4Cy883rBucxTwkDR8KZ8bdc9oksCMA3kD-RTo

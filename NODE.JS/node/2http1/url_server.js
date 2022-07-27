@@ -5,30 +5,24 @@ const http = require("http");
 //import url module
 //url module is the "predefined" module
 //url module, used to parse the url's
-//http://localhost:8989/?uname=admin&upwd=admin
+//http://localhost:8080/?uname=admin&upwd=admin
 const url = require("url");
-const fs = require("fs");
+
 //create the http server
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/html" });
   const q = url.parse(req.url, true).query;
-//   console.log(req.url);
-//   console.log(q);
+  //   console.log(req.url);
   if (q.uname == "admin" && q.upwd == "admin") {
-      fs.readFile(`${__dirname},/user.json`, "utf-8", (err, data) => {
-        // res.write("<h1>Login Success</h1>");
-      res.end(data);
-    });
-    console.log("success");
+    res.write("<h1>Login Success</h1>");
   } else {
     res.write("<h1>Login Fail</h1>");
-    console.log("fail");
   }
+  console.log('request rec...')
   res.end();
 });
-// console.log(server);
 
 //assign the port number
-server.listen(8989, () => {
-  console.log("server listening the port number 8989");
+server.listen(8080, () => {
+  console.log("server listening the port number 8080");
 });

@@ -1,0 +1,19 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "task.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hardik825/Ja.git"
+  },
+  "author": "Hardik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hardik825/Ja/issues"
+  },
+  "homepage": "https://github.com/hardik825/Ja#readme"
+}
