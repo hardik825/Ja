@@ -1,5 +1,5 @@
 const express = require("express");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 const LoginModule = require("./Login/login");
 const module1 = require("./module1/module1");
 

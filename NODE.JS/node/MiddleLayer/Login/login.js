@@ -2,8 +2,6 @@ const tokenObj=require("../Token/token")
 const express=require("express")
 const jwt = require("jwt-simple");
 
-const Login=express.Router();
-
 const LoginModule = express.Router();
 LoginModule.post("/",(req,res)=>{
     const uname=req.body.uname;
