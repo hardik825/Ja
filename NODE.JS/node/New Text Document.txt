@@ -1,0 +1,303 @@
+step 1: npx create-react-app Notesbook    ===to cmd
+...................................................................................................................................................................
+step 2: make backend folder & open Vs Code
+	npm init
+	npm i express 
+	npm i mongoose
+	npm i -D nodemon
+.....................................................................................................................................................................
+step 3: create server.js
+	//const express = require("express");
+    // const auth = require("./routes/auth");
+
+    // const app = express();
+    // const port = process.env.PORT || 6000;
+
+    // app.use(express.json());
+    // app.use("/", auth);
+
+    // app.listen(port, () => {
+    //   console.log(`NotesBook backend listening at http://localhost:${port}`);
+    // });
+...................................................................................................................................................................
+step 4: create db Folder & open Folder create db.js
+
+	//	const mongoose = require('mongoose')
+
+	// const mongodbURL ="mongodb://localhost:27017/notesbook?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
+
+	// const connectToMongo = ()=>{
+	//     mongoose.connect(mongodbURL, ()=>{
+	//         console.log("Connected to Mongo Successfully")
+	//     })
+	// }
+
+	// module.exports= connectToMongo
+.....................................................................................................................................................................
+step 5: create models Folder & open Folder create User.js
+
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+const UserSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password:{
+    type:String,
+    required:true
+  },
+  date:{
+    type:Date,
+    default:Date.now
+  }
+});
+
+const User=mongoose.model('users',UserSchema)
+module.exports=User;
+
+............................................................................................................................................................
+step :6 create routes Folder & open Folder create auth.js
+
+	npm i jsonwebtoken
+  npm i bcryptjs
+  npm i express-validator
+
+ -->   Signup api |||  create user
+
+ --->auth.js
+const express = rtequire("express");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { body, validationResult } = require("express-validator");
+const fetchuser = require("../middleware/fetchuser");
+
+const rotuer = express.Router();
+const JWT_SECRET = "Harryisagoodb$oy";
+
+// Route AuthenticTE A uSER using  : POST /api/v1/login. No login required
+rotuer.post("/createuser", async (req, res) => {
+  let success = false;
+  // If there are errors, return Bad request and the errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success, errors: errors.array() });
+  }
+  try {
+    //Find user alredy exists
+    let user = await user.findOne({ email: req.body.email })
+    if (user) {
+      return res
+        .status(400)
+        .json({ error: "Sorry a user with this email alredy exists" });
+    }
+    //bcrypt mathoed
+    const salt = await bcrypt.genSalt(10);
+    const secPass = await bcrypt.hash(req.body.password, salt);
+
+    //create a new user
+    user = await User.create({
+      name: req.body,
+      name,
+      password: secPass,
+      email: req.body.email,
+    });
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+    const authtoken = jwt.sign(data, JWT_SECRET);
+    success = true;
+    res.json({ success, authtoken });
+  } catch (error) {
+    console.error(error.massage);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+module.exports = rotuer;
+
+
+--->  server.js
+
+const auth = require("./routes/auth");
+
+app.use("/api/v1", auth);
+....................................................................................................................................................
+Step :7 Login Rotuer create  using fetchuser auth.js
+
+
+
+// ROUTE 2: Authenticate a User using: POST "/api/v1/login". No login required
+rotuer.post(
+  "/login",
+  [
+    body("email", "Enter a valid email").isEmail(),
+    body("password", "Password cannot be blank").exists(),
+  ],
+  async (req, res) => {
+    let success = false;
+    // If there are errors, return Bad request and the errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { email, password } = req.body;
+    try {
+      let user = await User.findOne({ email });
+      if (!user) {
+        success = false;
+        return res
+          .status(400)
+          .json({ error: "Please try to login with correct credentials" });
+      }
+      const passwordCompare = await bcrypt.compare(password, user.password);
+      if (!passwordCompare) {
+        success = false;
+        return res
+          .status(400)
+          .json({
+            success,
+            error: "Please try to login with correct credentials",
+          });
+      }
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authtoken = jwt.sign(data, JWT_SECRET);
+      success = true;
+      res.json({ success, authtoken });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
+
+Step :8 get user data Rotuer create  using fetchuser 
+
+-->middleware/fetchuser.js
+var jwt = require('jsonwebtoken');
+const JWT_SECRET = 'Harryisagoodb$oy';
+
+const fetchuser = (req, res, next) => {
+    // Get the user from the jwt token and add id to req object
+    const token = req.header('auth-token');
+    if (!token) {
+        res.status(401).send({ error: "Please authenticate using a valid token" })
+    }
+    try {
+        const data = jwt.verify(token, JWT_SECRET);
+        req.user = data.user;
+        next();
+    } catch (error) {
+        res.status(401).send({ error: "Please authenticate using a valid token" })
+    }
+
+}
+
+
+module.exports = fetchuser;
+
+-->  auth.js
+const fetchuser = require("../middleware/fetchuser");
+
+
+
+rotuer.post("/getuser", fetchuser, async (req, res) => {
+  try {
+    userId = req.user.id;
+    const user = await User.findById(userId).select("-password");
+    res.send(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+
+
+.........................................................................................................................................................
+Done
+
+open post men ya thunder c..
+...........................................................createuser
+Methode Post
+Url ==localhost:5000/api/auth/createuser
+
+Headers==
+
+Accept: */*
+User-Agent: Thunder Client (https://www.thunderclient.com)
+Content-Type: application/json
+
+
+Body==
+{
+    "name":"RamLal ",
+    "email":"ramlal@gmail.com",
+    "password":"papakajinn"
+}
+
+
+
+
+--------------Response
+
+{
+  "success": true,
+  "authtoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlYTE2ZWQxOTUxYWE0YTYzYzRjN2VhIn0sImlhdCI6MTY1OTUwODQ2MX0.d-9qmjxjz76SsBMg6TqeNSPU3a4_GtDnkCgjcqj5if0"
+}
+
+...............................................................Login
+Methode Post
+localhost:5000/api/auth/login
+
+
+
+Headers==
+
+Accept: */*
+User-Agent: Thunder Client (https://www.thunderclient.com)
+Content-Type: application/json
+
+Body==
+{
+   "email":"ramlal@gmail.com",
+    "password":"papakajinn"
+}
+
+--------------Response
+{
+  "success": true,
+  "authtoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlYTE2ZWQxOTUxYWE0YTYzYzRjN2VhIn0sImlhdCI6MTY1OTUwODgwMX0.DQ2RQSr3f1JuhGBNZ00z81GqwSkhKiQQO2KBkMJQ9Nw"
+}
+
+..............................................................getuser
+Methode Post
+localhost:5000/api/auth/getuser
+
+Headers==
+Accept: */*
+User-Agent: Thunder Client (https://www.thunderclient.com)
+auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJlNjdkZDU3ODE4NWZiNmJhNGRlM2MwIn0sImlhdCI6MTY1OTI4MDAwMX0.jyBwJ1BC_pesdRZC4dzyI96elBrMisIwj4nGi6qtF68
+
+.............................Response
+{
+  "_id": "62ea16ed1951aa4a63c4c7ea",
+  "name": "RamLal ",
+  "email": "ramlal@gmail.com",
+  "date": "2022-08-03T06:34:21.033Z",
+  "__v": 0
+}
